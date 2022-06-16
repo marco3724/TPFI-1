@@ -33,8 +33,15 @@ False
 -- uso la zip per zippare (zs con (genShuffle xs ys)) 
 --filtro con  filter (\(zs, xys) -> zs==xys )
 -- e faccio any
-
-
+-- genShuffle' :: [a] -> [a] -> [[a]]
+-- genShuffle' [] (y:ys) = y:genShuffle' [] ys
+-- genShuffle' [] [] = [[]]
+-- genShuffle' (x:xs) (y:ys) = x:genShuffle' xs (y:ys) ++ y:genShuffle' (x:xs) ys
+genShuffle' :: [a] -> [a] -> [[a]]
+genShuffle' [] ys = [ys]
+genShuffle' xs [] = [xs]
+genShuffle' xs@(x:txs) ys@(y:tys) =
+    [x:ss | ss <- genShuffle' txs ys]++[y:ss | ss <- genShuffle' xs tys]
 
 -- Esercizio 2.1
 lol (x:xs) = [x] : lol xs
@@ -118,13 +125,16 @@ partsAux n (x:xs)
             h = head x
             s = sum x
             r = partsAux n xs
+
+
 --e' inutile che controlla anche n quindi si fa n-1 in quanto la partizione con [n] gia ce dall inzio
 -- partaux intero lista di liste
 --  se s == n aggiyungo la lista la mia lista di liste
 --  se e' maggiore allora restituisco la lista di liste
 --  altrimenti faccio il partsaux di n e una lista di liste dove aggiungo h,h+1..,n-1 a x(che e' una lista che ancora non ha la somma come n)
 --     e aggiugno ogni elemento in r in  ((partsAux n  (map (:x) [h..n-1]))
-
+-- *Main> map (:[1,2,3]) [1..5]
+-- [[1,1,2,3],[2,1,2,3],[3,1,2,3],[4,1,2,3],[5,1,2,3]]
 --     partaux restituisce una lista di liste
 
 
